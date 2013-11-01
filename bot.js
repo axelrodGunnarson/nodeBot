@@ -40,13 +40,9 @@ var endTimeout = function(to, ob) {
 // Listen for any message
 //nick=nickname, to=channel; text=content
 bot.addListener("message", function(nick, to, text, message) {
-//	console.log("received message: "+message.args.slice(1));
-//	console.log("received message: "+printObject(message));
-//	console.log ("nick: "+nick);
-//	console.log ("to: "+to);
-//	console.log ("text: "+text);
     var arrText = text.split(" ");
-//    console.log("received message: "+text+ " "+ arrText.length);
+    if (arrText[0][0]!= '@')
+        return;
 	if (arrText[0]=="@challenge") {
         if (arrText.length==1) {
             bot.say (to, "give me the name of a challenge!");
@@ -57,7 +53,6 @@ bot.addListener("message", function(nick, to, text, message) {
             bot.say (to, "not a challenge, you dumbass");
             return;
         }
-//		console.log( "Challenge "+arrText[1]+":\n"+ob.chall);
         var ch_container = chall.challenges[arrText[1]];
         if (! tasks.hasOwnProperty(to)) {
             tasks[to]={}
@@ -75,7 +70,6 @@ bot.addListener("message", function(nick, to, text, message) {
         }
 	}
     else if (arrText[0]==="@sol") {
-        
         if (arrText.length!=3) {
             bot.say(to,"What you asked doesn't make sense");
             return;
@@ -98,7 +92,7 @@ bot.addListener("message", function(nick, to, text, message) {
                     return;
                 }
                 else {
-                    bot.say("Stop embarassing yourself "+ nick);
+                    bot.say(to, "Stop embarassing yourself "+ nick);
                     return;
                 }
             }
@@ -121,6 +115,15 @@ bot.addListener("message", function(nick, to, text, message) {
         st+="\nsay @sol <def> <solution> to give me a solution to a challenge";
         st+="\nsay @help for display this message";
         bot.say(to, st);
+    }
+    else if (arrText[0] == "@hex") {
+        var x = parseInt(arrText[1], 16);
+        if (isNaN(x))
+            x="Are you stupid?";
+        bot.say(to, x);
+    }
+    else if (arrText[0] == "@emdel" || arrText[0] == "@emd3l") {
+        bot.say(to, arrText[0]+ " gay");
     }
 //add an else if for doing something else    
 
